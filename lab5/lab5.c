@@ -55,7 +55,6 @@ int find_worst_fit(struct header *free_list_ptr, uint64_t size) {
   // TODO: Implement worst fit
   struct header *worst = NULL;
   struct header *curr = free_list_ptr;
-  return worst_fit_id;
 
   while (curr != NULL) {
     if (curr->size >= size && (worst == NULL || curr->size > worst->size)) {
@@ -68,6 +67,8 @@ int find_worst_fit(struct header *free_list_ptr, uint64_t size) {
   if (worst != NULL) {
     worst_fit_id = worst->id;
   }
+
+  return worst_fit_id;
 }
 
 int main(void) {

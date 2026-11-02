@@ -63,7 +63,7 @@ void insert_sorted(uint64_t data) {
 
     if (curr == NULL) {
       prev->next = new_node;
-      new_node->next curr;
+      new_node->next = curr;
       inserted = true;
       return;
     }
@@ -216,7 +216,7 @@ int main() {
   ASSERT(index_of(2) == 1);
   ASSERT(index_of(5) == 3);
   ASSERT(index_of(1) == 0);
-  ASSERT(index_of(3) == -2);
+  ASSERT(index_of(3) == 2);
 
   TEST(info.sum == 1 + 3 + 5 + 2);
   TEST(index_of(2) == 1);

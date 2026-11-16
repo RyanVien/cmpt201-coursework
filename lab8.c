@@ -71,6 +71,7 @@ static count_map_t count_words_parallel(word_t *words, size_t num_words) {
   size_t chunk_size = num_words / THREAD_COUNT;
 
   // TODO: Perform initialization
+  pthread_mutex_init(&count_mutex, NULL);
 
   // Launch threads
   for (size_t i = 0; i < THREAD_COUNT; i++) {

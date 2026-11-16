@@ -45,6 +45,10 @@ static void add_word_counts_in_chunk(count_map_t *map, word_t *words, size_t num
       w = create_entry(words[i], 1);
       HASH_ADD_STR(*map, word, w);
     }
+
+    if (lock) {
+      pthread_mutex_unlock(lock);
+    }
   }
 }
 
@@ -124,7 +128,7 @@ int main(void) {
     // --------- Task 1 --------- \\
     // Sort the table by the sort function in uthash using `sort_func`.
     // TODO
-
+    HASH_SORT(word_map, sort_func);
     print_counts(word_map);
   }
 

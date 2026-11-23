@@ -121,8 +121,13 @@ void *handle_client(void *arg) {
   ssize_t num_read;
 
   // TODO: increase total_message_count per message
-  while ((num_read = read(cfd, buf, BUF_SIZE)) > 0) {
+  while ((num_read = read(cfd, buf, BUF_SIZE - 1)) > 0) {
     buf[num_read] = '\0';
+
+    if (buf[num_read - 1] == '\n') {
+      buf[num_read - 1] = '\0';
+    }
+
     pthread_mutex_lock(&count_mutex);
     int tmp_count = ++total_message_count;
     pthread_mutex_unlock(&count_mutex);

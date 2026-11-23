@@ -33,7 +33,7 @@ num_read = read(STDIN_FILENO, buf, BUF_SIZE)
 
 4. How does the client program end? How can you tell that in the code?
 A: When num_read is 1 or less. This is because the code never closes, and exits until the
-following while loop is ongoing:
+following while loop is done:
 while ((num_read = read(STDIN_FILENO, buf, BUF_SIZE)) > 1)
 */
 

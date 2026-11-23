@@ -76,8 +76,6 @@ int main() {
 }
 
 // server.c
-#include <arpa/inet.h>
-#include <errno.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -116,21 +114,23 @@ void *handle_client(void *arg) {
   int cfd = client->cfd;
   int client_id = client->client_id;
   free(client);
-  client = NULL;
+
+  printf("New client created! ID %d on socket FD %d\n", client_id, cfd);
+
   char buf[BUF_SIZE];
   ssize_t num_read;
 
   // TODO: increase total_message_count per message
-  while ((num_read = read(STDIN_FILENO, buf, BUF_SIZE)) > 1) {
+  while ((num_read = read(cfd, buf, BUF_SIZE)) > 0) {
     buf[num_read] = '\0';
     pthread_mutex_lock(&count_mutex);
-    int tmp_count = total_message_count++;
+    int tmp_count = ++total_message_count;
     pthread_mutex_unlock(&count_mutex);
     printf("Msg # %d; Client ID %d: %s\n", tmp_count, client_id, buf);
   }
+
   close(cfd);
   printf("Ending thread for client %d\n", client_id);
-
   return NULL;
 }
 

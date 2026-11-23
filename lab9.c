@@ -32,8 +32,8 @@ A: It gets the data from stdin. You can see it in this read function:
 num_read = read(STDIN_FILENO, buf, BUF_SIZE)
 
 4. How does the client program end? How can you tell that in the code?
-A: When num_read is less than 1. This is because the code never closes, and exits until the
-following while loop is finished:
+A: When num_read is 1 or less. This is because the code never closes, and exits until the
+following while loop is done:
 while ((num_read = read(STDIN_FILENO, buf, BUF_SIZE)) > 1)
 */
 
@@ -121,8 +121,13 @@ void *handle_client(void *arg) {
   ssize_t num_read;
 
   // TODO: increase total_message_count per message
-  while ((num_read = read(cfd, buf, BUF_SIZE)) > 0) {
+  while ((num_read = read(cfd, buf, BUF_SIZE - 1)) > 0) {
     buf[num_read] = '\0';
+
+    if (buf[num_read - 1] == '\n') {
+      buf[num_read - 1] = '\0';
+    }
+
     pthread_mutex_lock(&count_mutex);
     int tmp_count = ++total_message_count;
     pthread_mutex_unlock(&count_mutex);
